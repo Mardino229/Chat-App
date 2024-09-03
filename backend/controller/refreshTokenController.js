@@ -1,31 +1,26 @@
-const User = require('../model/User');
+const Actor = require('../model/Actor');
 const jwt = require('jsonwebtoken');
 
 const handleRefreshToken = async (req, res) => {
+    console.log(req.cookies.refreshToken);
     const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendStatus(401);
-    const refreshToken = cookies.jwt;
+    if (!cookies?.refreshToken) return res.sendStatus(401);
+    const refreshToken = cookies.refreshToken;
 
-    const foundUser = await User.findOne({ refreshToken }).exec();
+    const foundUser = await Actor.findOne({ refreshToken: refreshToken }).exec();
+    console.log(foundUser)
     if (!foundUser) return res.sendStatus(403); //Forbidden 
-    // evaluate jwt 
+    console.log(foundUser)
     jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
-            if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
-            const roles = Object.values(foundUser.roles);
+            if (err || foundUser.email !== decoded.email) return res.sendStatus(403);
             const accessToken = jwt.sign(
-                {
-                    "UserInfo": {
-                        "username": decoded.username,
-                        "roles": roles
-                    }
-                },
-                process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: '10s' }
-            );
-            res.json({ roles, accessToken })
+                {userId: foundUser._id},
+                process.env.JWT_SECRET,
+                {expiresIn: '55s'});
+            res.json({accessToken})
         }
     );
 }
