@@ -12,7 +12,7 @@ export default function UserRoutes () {
             <NavBar/>
             <Routes>
                 <Route path="/" element={<Discussion />} />
-                <Route path="/:id" element={<Discussion />} />
+                <Route path="/:receiver/:sender" element={<Discussion />} />
             </Routes>
         </>
     )

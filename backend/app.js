@@ -1,3 +1,4 @@
+const chat = require("./sockets/chatSocket")
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -26,6 +27,8 @@ app.use(bodyParser.json());
 app.use('/', authRoute)
 app.use('/refresh', refresh)
 app.use('/actor', actorRoute)
+
+
 
 // app.use('/images', express.static(path.join(__dirname, 'images')));
 

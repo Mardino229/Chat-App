@@ -54,7 +54,7 @@ const login = (req, res) => {
                             const authToken = jwt.sign(
                                 {userId: user._id},
                                 process.env.JWT_SECRET,
-                                {expiresIn: '50s'})
+                                {expiresIn: '1h'})
                             const refreshToken = jwt.sign(
                                 { email: user.email },
                                 process.env.REFRESH_TOKEN_SECRET,
