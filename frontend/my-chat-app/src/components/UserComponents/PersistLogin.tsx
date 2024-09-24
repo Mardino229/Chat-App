@@ -39,7 +39,9 @@ const PersistLogin = () => {
     return (
         <>
             {isLoading
-                ? <p>Loading...</p>
+                ? <div className="h-screen flex items-center justify-center w-full">
+                    <span className="loader"></span>
+                </div>
                 : <Outlet />
             }
         </>
